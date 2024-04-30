@@ -19,6 +19,7 @@ class UserAdmin(admin.ModelAdmin):
             gettext_lazy('Personal info'),
             {
                 'fields': (
+                    'username',
                     'first_name',
                     'last_name',
                     'email',

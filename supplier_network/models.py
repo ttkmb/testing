@@ -1,3 +1,4 @@
+from django.contrib.auth import get_user_model
 from django.db import models
 from django.utils.translation import gettext_lazy
 
@@ -14,14 +15,15 @@ class SupplierNetwork(models.Model):
     email = models.EmailField(verbose_name='Email', unique=True)
     country = models.CharField(max_length=255, verbose_name='Страна')
     city = models.CharField(max_length=255, verbose_name='Город')
-    street = models.CharField(max_length=255, verbose_name='Улица', blank=True, null=True, unique=True)
+    street = models.CharField(max_length=255, verbose_name='Улица', blank=True, null=True)
     house = models.IntegerField(verbose_name='Номер дома', blank=True, null=True)
     products = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True, verbose_name='Продукты')
     structure = models.CharField(max_length=50, choices=STRUCTURE.choices, verbose_name='Структура')
     supplier = models.ForeignKey('self', on_delete=models.SET_NULL, null=True, verbose_name='Поставщик', blank=True)
     arrears = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Задолженность',
-                                                  default=0)
-    date_of_creation = models.DateField(auto_now_add=True, verbose_name='Дата создания')
+                                  default=0)
+    date_of_creation = models.DateField(auto_now_add=True, verbose_name='Дата создания'),
+    owner = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, verbose_name='Владелец', blank=True, null=True)
 
     class Meta:
         verbose_name = 'Сеть поставщиков'
